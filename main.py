@@ -1,11 +1,11 @@
 # %% codecell
 import numpy as np
 import matplotlib.pyplot as plt
-#from numba import njit
+from numba import njit
 import streamlit as st
 
 
-# @njit
+@njit
 def fourier(x, coeffs):
     a = coeffs[0:-1:2]
     b = coeffs[1:-1:2]
@@ -15,7 +15,7 @@ def fourier(x, coeffs):
     return y
 
 
-# @njit
+@njit
 def integral(coeffs):
     a = coeffs[0:-1:2]
     b = coeffs[1:-1:2]
