@@ -30,7 +30,7 @@ st.title("Random Fourier Functions")
 st.markdown("This application creates random functions of the following type:")
 st.latex(
     r'''f_{coeffs}(x) = a_0/2 +
-    \sum_{i=1}^ {a_i}\, \cos(2\pi \, i \, x)+b_i\, \sin(2\pi \, i \, x)''')
+    \sum_{i=1}^N {a_i}\, \cos(2\pi \, i \, x)+b_i\, \sin(2\pi \, i \, x)''')
 st.markdown("The coefficients $a_i$ and $b_i$ are of order $O(i^{-smoothness})$. ")
 st.markdown("More precisely, $a_i = r_i \cdot i^{-smoothness}$ for a random number $r_i$.")
 
