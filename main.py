@@ -35,7 +35,7 @@ st.markdown("The coefficients $a_i$ and $b_i$ are of order $O(i^{-smoothness})$.
 st.markdown("More precisely, $a_i = r_i \cdot i^{-smoothness}$ for a random number $r_i$.")
 
 smoothness = st.sidebar.slider('Smoothness', 0.0, 10.0, 2.0, 0.1)
-npoints = st.sidebar.slider('Number of points in plot', 100, 10000, 100, 1000)
+npoints = st.sidebar.slider('Number of points in plot', 100, 10000, 1000, 100)
 fixorder = st.sidebar.checkbox('Fix expansion order?', 10)
 fixordervalue = st.sidebar.slider('Expansion order value', 1, 1000, 100, 1)
 nsamples = st.sidebar.slider("Number of samples", 1, 200, 3, 1)
