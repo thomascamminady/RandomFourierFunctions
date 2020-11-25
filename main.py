@@ -1,11 +1,10 @@
-# %% codecell
 import numpy as np
 import matplotlib.pyplot as plt
-from numba import njit
+# from numba import njit
 import streamlit as st
 
 
-@njit
+# @njit
 def fourier(x, coeffs):
     a = coeffs[0:-1:2]
     b = coeffs[1:-1:2]
@@ -15,7 +14,7 @@ def fourier(x, coeffs):
     return y
 
 
-@njit
+# @njit
 def integral(coeffs):
     a = coeffs[0:-1:2]
     b = coeffs[1:-1:2]
@@ -61,7 +60,10 @@ x = np.linspace(0, 1, npoints)
 
 plt.style.use("https://raw.githubusercontent.com/camminady/kitstyle/master/kitishnotex.mplstyle")
 fig, axs = plt.subplots(2, 1, figsize=(8, 6))
-for _ in range(nsamples):
+
+
+datastorage = {}
+for sampleid in range(nsamples):
     if sampling == "rand":
         coeffs = rng.uniform(-1, 1, n)
     else:
@@ -72,9 +74,17 @@ for _ in range(nsamples):
     if normalizezero:
         y = integral(coeffs)
         coeffs[0] -= 2*y  # integral now has value 0
-    axs[0].plot(x, fourier(x, coeffs), lw=1, alpha=0.7)
+    y = fourier(x, coeffs)
+    axs[0].plot(x, y, lw=1, alpha=0.7)
     if order > 1:
         axs[1].loglog(np.arange(order), np.abs(coeffs[0:-1:2]), '.', markersize=3, alpha=0.7)
+
+    infos = {"order": order,
+             "x": list(x),
+             "y": list(y),
+             "coeffs": list(coeffs),
+             }
+    datastorage[f"sample_{sampleid}"] = infos
 
 axs[0].set_ylim([-2, 2])
 axs[0].set_xlabel("$x$")
@@ -85,3 +95,19 @@ axs[1].set_xlabel("$n$")
 
 
 st.pyplot(fig)
+
+toshow = st.checkbox("Show function values and coefficients in JSON format?", False)
+st.markdown("(Maybe only choose few samples and few points in plot and recreate the function values with the script below.)")
+st.markdown("""
+```
+def fourier(x, coeffs):
+    a = coeffs[0:-1:2]
+    b = coeffs[1:-1:2]
+    y = a[0]/2*np.ones_like(x)
+    for i, (ai, bi) in enumerate(zip(a, b)):
+        y += ai*np.cos(2*np.pi*(i+1)*x) + bi*np.sin(2*np.pi*(i+1)*x)
+    return y
+```
+""")
+if toshow:
+    st.json(datastorage)
